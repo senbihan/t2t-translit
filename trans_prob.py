@@ -49,7 +49,7 @@ class TranslitProb(text_problems.Text2TextProblem):
     del tmp_dir
     del dataset_split
 
-    f = open('/content/data/wiki_names.txt',encoding='utf8')
+    f = open('/content/t2t-translit/wiki_names.txt',encoding='utf8')
     en = []
     bn = []
     
