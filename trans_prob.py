@@ -28,6 +28,10 @@ class TranslitProb(text_problems.Text2TextProblem):
     return 2**8  # ~8k
 
   @property
+  def vocab_type(self):
+    return "character"
+  
+  @property
   def is_generate_per_split(self):
     # generate_data will shard the data into TRAIN and EVAL for us.
     return False
