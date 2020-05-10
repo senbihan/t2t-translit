@@ -24,9 +24,13 @@ class TranslitProb(text_problems.Text2TextProblem):
   """Predict next line of poetry from the last line. From Gutenberg texts."""
   
   @property
-  def approx_vocab_size(self):
-    """Approximate vocab size to generate. Only for VocabType.SUBWORD."""
-    return 2**8  # ~32k
+  def vocab_type(self):
+    return "character"
+  
+  # @property
+  # def approx_vocab_size(self):
+  #   """Approximate vocab size to generate. Only for VocabType.SUBWORD."""
+  #   return 2**8  # ~32k
   
   @property
   def is_generate_per_split(self):
@@ -39,7 +43,7 @@ class TranslitProb(text_problems.Text2TextProblem):
     # 10% evaluation data
     return [{
         "split": problem.DatasetSplit.TRAIN,
-        "shards": 9,
+        "shards": 50,
     }, {
         "split": problem.DatasetSplit.EVAL,
         "shards": 1,
@@ -50,7 +54,7 @@ class TranslitProb(text_problems.Text2TextProblem):
     del tmp_dir
     del dataset_split
 
-    f = open('/content/t2t-translit/wiki_names.txt',encoding='utf8')
+    f = open('/content/t2t-translit/train.txt',encoding='utf8')
     en = []
     bn = []
     
@@ -61,7 +65,7 @@ class TranslitProb(text_problems.Text2TextProblem):
         for i in range(len(b.split(" "))):
           # print(' '.join(list(e.split(" ")[i].strip())),' '.join(list(b.split(" ")[i].strip())))
           yield {
-              "inputs": ' '.join(list(e.split(" ")[i].strip())),
+              "inputs": ' '.join(list(e.split(" ")[i].strip().lower())),
               "targets": ' '.join(list(b.split(" ")[i].strip())),
           }
         
