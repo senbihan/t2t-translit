@@ -22,14 +22,11 @@ def my_very_own_hparams():
 @registry.register_problem
 class TranslitProb(text_problems.Text2TextProblem):
   """Predict next line of poetry from the last line. From Gutenberg texts."""
-
+  
   @property
   def approx_vocab_size(self):
-    return 2**8  # ~8k
-
-  @property
-  def vocab_type(self):
-    return "character"
+    """Approximate vocab size to generate. Only for VocabType.SUBWORD."""
+    return 2**8  # ~32k
   
   @property
   def is_generate_per_split(self):
@@ -62,8 +59,9 @@ class TranslitProb(text_problems.Text2TextProblem):
       e = e.strip()
       if len(b.split(" ")) == len(e.split(" ")):
         for i in range(len(b.split(" "))):
+          # print(' '.join(list(e.split(" ")[i].strip())),' '.join(list(b.split(" ")[i].strip())))
           yield {
-              "inputs": e[i],
-              "targets": b[i],
+              "inputs": ' '.join(list(e.split(" ")[i].strip())),
+              "targets": ' '.join(list(b.split(" ")[i].strip())),
           }
         
