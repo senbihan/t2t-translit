@@ -65,7 +65,24 @@ class TranslitProb(text_problems.Text2TextProblem):
         for i in range(len(b.split(" "))):
           # print(' '.join(list(e.split(" ")[i].strip())),' '.join(list(b.split(" ")[i].strip())))
           yield {
-              "inputs": ' '.join(list(e.split(" ")[i].strip().lower())),
+              "inputs": tokenize_english(e.split(" ")[i]),
               "targets": ' '.join(list(b.split(" ")[i].strip())),
           }
-        
+  
+def tokenize_english(text):
+  tokens = []
+  vowels = 'aeiou'
+  semivowels = 'wy'
+  current_token = ''
+  for char in text:
+    if char is 'h' and (current_token != '' and current_token[-1] not in vowels and current_token[-1] not in semivowels):
+      tokens.append(current_token + 'h')
+      current_token = ''
+    else:
+      if current_token != '':
+        tokens.append(current_token)
+        current_token = char
+  if current_token != '':
+    tokens.append(current_token)
+
+  return ' '.join(tokens)
