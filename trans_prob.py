@@ -69,20 +69,21 @@ class TranslitProb(text_problems.Text2TextProblem):
               "targets": ' '.join(list(b.split(" ")[i].strip())),
           }
   
-def tokenize_english(text):
-  tokens = []
+def tokenize_english(word):
   vowels = 'aeiou'
-  semivowels = 'wy'
+  semivowels = 'yw'
+  tokens = []
   current_token = ''
-  for char in text:
+  for char in word:
     if char is 'h' and (current_token != '' and current_token[-1] not in vowels and current_token[-1] not in semivowels):
       tokens.append(current_token + 'h')
       current_token = ''
     else:
       if current_token != '':
         tokens.append(current_token)
-        current_token = char
+      current_token = char
+        
   if current_token != '':
     tokens.append(current_token)
-
+     
   return ' '.join(tokens)
